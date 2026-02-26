@@ -4,11 +4,13 @@ import { MoviesList } from './components/MoviesList';
 import moviesFromServer from './api/movies.json';
 
 const byFilter = (movies, query) => {
+  const lowQuery = query.trim().toLowerCase();
+
   if (query) {
     return movies.filter(
-      m =>
-        m.title.toLowerCase().includes(query.trim().toLowerCase()) ||
-        m.description.toLowerCase().includes(query.trim().toLowerCase()),
+      movie =>
+        movie.title.toLowerCase().includes(lowQuery) ||
+        movie.description.toLowerCase().includes(lowQuery),
     );
   }
 
@@ -17,7 +19,7 @@ const byFilter = (movies, query) => {
 
 export const App = () => {
   const [query, setQuery] = useState('');
-  const newMoviesList = byFilter(moviesFromServer, query);
+  const visibleMovies = byFilter(moviesFromServer, query);
 
   return (
     <div className="page">
@@ -44,7 +46,7 @@ export const App = () => {
           </div>
         </div>
 
-        <MoviesList movies={newMoviesList} />
+        <MoviesList movies={visibleMovies} />
       </div>
 
       <div className="sidebar">Sidebar goes here</div>
